@@ -7,6 +7,8 @@ const UserProvider=({children})=>{
   
     const [data, setData] = useState([]);
     const [imgs, setImgs] = useState([]);
+    const [search,setSearch]=useState([])
+  
 
 
 
@@ -27,7 +29,7 @@ const UserProvider=({children})=>{
     }, []);
 
 return (
-    <UserContext.Provider value={{data,imgs}}>
+    <UserContext.Provider value={{data,imgs,setSearch,search}}>
         {children}
         </UserContext.Provider>
 )

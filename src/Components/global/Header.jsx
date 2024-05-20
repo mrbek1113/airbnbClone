@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { FaUserAlt } from "react-icons/fa";
 import { BsGlobe2 } from "react-icons/bs";
@@ -6,12 +6,19 @@ import { FiSearch } from "react-icons/fi";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import Logo from '../../assets/images/image.png'
 import axios from "axios";
+import { UserContext } from "../../Context/UserContext";
 
 const Header = () => {
     const location = useLocation();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [ModalOpen, setModalOpen] = useState(false);
     const navigate=useNavigate()
+    const {setSearch}=useContext(UserContext)
+
+   
+
+  const [user,setUser]=useState([])
+
 
     const [data, setData] = useState([]);
 
@@ -20,9 +27,9 @@ const Header = () => {
     useEffect(() => {
       axios.get(url)
         .then(res => setData(res.data))
+        getUser()
       }, []);
-
-    useEffect(() => {
+   useEffect(() => {
         let lastScrollTop = 0;
         const navbar = document.getElementById('navbar');
 
@@ -61,6 +68,10 @@ const Header = () => {
         )
       }
 
+      const getUser=()=>{
+        axios.get('https://1c09cdff245b1f0c.mokky.dev/cards')
+        .then(res =>setUser(res.data))
+      }
 
     const MyModalContent = () => {
         return (
@@ -91,8 +102,6 @@ const Header = () => {
           </div>
         );
       };
-    
-
     return (
         <div className="fixed z-30 top-0 bg-white w-full flex items-start justify-between px-2 py-2">
             <div><img src={Logo} alt="" /></div>
@@ -105,7 +114,7 @@ const Header = () => {
                 <div className="text-[15px] gap-4 sticky top-0 flex border-2 border-black w-[1000px] justify-between px-4 py-1 items-center rounded-3xl mt-5">
                     <div>
                         <h1 className="font-bold">Where</h1>
-                        <input className="outline-none" type="text" placeholder="Search destination" />
+                        <input onChange={(e)=>setSearch(e.target.value)}  className="outline-none" type="text" placeholder="Search destination" />
                     </div>
                     <div>
                         <h1 className="font-bold">Check in</h1>

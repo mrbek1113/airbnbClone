@@ -12,16 +12,13 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
-import{ UserContext } from "../../Context/UserContext";
+import { UserContext } from "../../Context/UserContext";
 import { useNavigate } from "react-router-dom";
 
 const Housing = () => {
- 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const {data,imgs}=useContext(UserContext)
-  const navigate=useNavigate()
-
-  
+  const { data, imgs, search } = useContext(UserContext);
+  const navigate = useNavigate();
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -109,41 +106,43 @@ const Housing = () => {
 
   return (
     <div className="relative w-full p-[40px] gap-5 flex items-center justify-center text-center flex-wrap mx-auto">
-      {data?.map((product) => (
-        <div className="relative w-[280px] p-[5px] h-[330px] rounded-2xl" key={product.id}>
-          <Swiper
-            modules={[Navigation, Pagination, Scrollbar, Autoplay, A11y]}
-            spaceBetween={10}
-            slidesPerView={1}
-            autoplay={{ delay: 3000 }}
-            // loop={true}
-            pagination={{ clickable: true }}
-          >
-            {imgs?.map((img) => (
-              <SwiperSlide className="w-10" key={img.id}>
-                <img className="w-full h-[320px] rounded-2xl object-cover" src={img?.img} alt="experience" />
-              </SwiperSlide>
+      {data?.filter((product) => product.city.includes(search) )
+        .map((product) => (
+          <div className="relative w-[280px] p-[5px] h-[330px] rounded-2xl" key={product.id}>
+            <Swiper
+              modules={[Navigation, Pagination, Scrollbar, Autoplay, A11y]}
+              spaceBetween={10}
+              slidesPerView={1}
+              autoplay={{ delay: 3000 }}
+              // loop={true}
+              pagination={{ clickable: true }}
+            >
+              {imgs?.map((img) => (
+                <SwiperSlide className="w-10" key={img.id}>
+                  <img className="w-full h-[320px] rounded-2xl object-cover" src={img?.img} alt="experience" />
+                </SwiperSlide>
               ))}
-          </Swiper>
-          <h1>{product.name}</h1>
-          <h1>{product.price}</h1>
-          <button onClick={()=>navigate(`/navigate/${product.id}`)} className="absolute z-20 bg-white text-2xl w-[60px] top-[20px] left-[20px] flex items-center justify-center rounded-2xl">
-            Live
-          </button>
-          <button onClick={toggleModal} className="absolute z-20 bg-white text-2xl w-[40px] h-[40px] top-[20px] right-[20px] flex items-center justify-center rounded-2xl">
-            <FiPaperclip />
-          </button>
-        </div>
-      ))}
+            </Swiper>
+            <h1>{product.name}</h1>
+            <h1>{product.price}</h1>
+            <button onClick={() => navigate(`/navigate/${product.id}`)} className="absolute z-20 bg-white text-2xl w-[60px] top-[20px] left-[20px] flex items-center justify-center rounded-2xl">
+              Live
+            </button>
+            <button onClick={toggleModal} className="absolute z-20 bg-white text-2xl w-[40px] h-[40px] top-[20px] right-[20px] flex items-center justify-center rounded-2xl">
+              <FiPaperclip />
+            </button>
+          </div>
+        ))}
 
       {isModalOpen && (
-        <div className='fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-60'>
+        <div className="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-60">
           <div onClick={(e) => e.stopPropagation()} className="pointer-events-auto">
             <MyModalContent />
           </div>
         </div>
       )}
     </div>
-  );  };
+  );
+};
 
 export default Housing;
