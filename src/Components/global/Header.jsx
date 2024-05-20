@@ -95,7 +95,7 @@ const Header = () => {
 
     return (
         <div className="fixed z-30 top-0 bg-white w-full flex items-start justify-between px-2 py-2">
-            <img src={Logo} alt="" />
+            <div><img src={Logo} alt="" /></div>
             <div className={` ${location.pathname === '/register' ? 'hidden' : 'block'} && ${location.pathname === '/login' ? 'hidden' : 'block'} flex flex-col items-center`}>
                 <div id="navbar" className="flex items-center justify-center gap-4 text-black text-xl transition-all duration-300 bg-white">
                     <NavLink to="/" className="transition ease-in-out delay-150 hover:bg-gray-200 px-5 py-1 rounded-2xl">Stays</NavLink>
