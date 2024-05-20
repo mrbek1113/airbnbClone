@@ -9,7 +9,7 @@ const Login = () => {
         <input className='border-2 py-4 text-xl px-3 border-black opacity-50 rounded-xl' placeholder='Username'  type="email" />
         <input  className='border-2 py-4 text-xl px-3 border-black rounded-xl opacity-50' placeholder='Password' type="passwor" />
         <button className=' py-3 px-3 rounded-xl text-xl text-white bg-blue-400 shadow-[0_2px_30px_rgba(8,_112,_184,_0.7)] hover:bg-white hover:text-blue-400'>Login</button>
-        <Link className='underline text-blue-600' to={'/'}>Register</Link>
+        <Link className='underline text-blue-600' to={'/login'}>Register</Link>
      </div>
     </div>
   )
