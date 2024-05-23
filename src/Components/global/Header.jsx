@@ -75,7 +75,7 @@ const Header = () => {
 
     const MyModalContent = () => {
         return (
-          <div className=" overflow-y-scroll  rounded-2xl p-[30px] w-[900px] h-[700px] bg-white">
+          <div className=" overflow-y-scroll  rounded-2xl p-[30px] w-full lg:w-[900px] h-[700px] bg-white">
         <button className=" fixed  bg-red-500 px-4 py-2 rounded-lg" onClick={toggleModal}>X</button>
             <div className="w-full h-[40px]  flex items-center mt-12 justify-start gap-5 px-4 py2 border-b-2 border-black">
                 <h1>Language</h1>
@@ -134,7 +134,7 @@ const Header = () => {
             <div className="flex items-center text-xl">
                 <button onClick={()=>navigate('/mehome')} className={ ` lg:flex hidden hover:bg-gray-200 px-3 py-2 rounded-2xl font-bold ${location.pathname === '/register' ? 'hidden' : 'block'} && ${location.pathname === '/login' ? 'hidden' : 'block'}` }>Airbnb your home</button>
                 <button onClick={toggleModal} className=" lg:flex hiddenhover:bg-gray-200 px-4 py-4 rounded-[50%]"><BsGlobe2 /></button>
-                <button onClick={Modal} className=" lg:flex hidden w-[100px] h-[40px] flex items-center justify-evenly hover:bg-gray-200 px-2 py-1 rounded-2xl"><GiHamburgerMenu /><FaUserAlt /></button>
+                <button onClick={Modal} className=" lg:flex hidden w-[100px] h-[40px]  items-center justify-evenly hover:bg-gray-200 px-2 py-1 rounded-2xl"><GiHamburgerMenu /><FaUserAlt /></button>
             </div>
             {isModalOpen && (
                 <div className='fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-60'>
