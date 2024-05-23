@@ -21,7 +21,7 @@ const Carousel = () => {
      <Swiper
       modules={[Navigation, Pagination, Scrollbar, Autoplay, A11y]}
       spaceBetween={15}
-      slidesPerView={5}
+      slidesPerView={3}
       // autoplay={{ delay: 3000 }}
       loop={true}
       navigation={true}
@@ -29,7 +29,7 @@ const Carousel = () => {
     >
       {data?.map((item) => (
         <SwiperSlide  className=" flex gap-10 bg-gray-200 rounded-2xl" key={item.id}>
-          <h1 className="w-[200px] flex justify-center text-black text-xl font-bold px-2 py-2 ">{item.name}</h1>
+          <h1 className=" lg:w-[150px] w-[200px] flex justify-center items-center text-black text-xl font-bold px-2 py-2 ">{item.name}</h1>
         </SwiperSlide>
       ))}
     </Swiper>

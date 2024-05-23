@@ -104,37 +104,37 @@ const Header = () => {
       };
     return (
         <div className="fixed z-30 top-0 bg-white w-full flex items-start justify-between px-2 py-2">
-            <div><img src={Logo} alt="" /></div>
+            <div className="w-[200px]"><img src={Logo} alt=""className="w-[200px]" /></div>
             <div className={` ${location.pathname === '/register' ? 'hidden' : 'block'} && ${location.pathname === '/login' ? 'hidden' : 'block'} flex flex-col items-center`}>
-                <div id="navbar" className="flex items-center justify-center gap-4 text-black text-xl transition-all duration-300 bg-white">
+                <div id="navbar" className="lg:flex hidden items-center justify-center gap-4 text-black text-xl transition-all duration-300 bg-white">
                     <NavLink to="/" className="transition ease-in-out delay-150 hover:bg-gray-200 px-5 py-1 rounded-2xl">Stays</NavLink>
                     <NavLink to="/experiences" className="hover:bg-gray-200 px-2 py-1 rounded-2xl">Experiences</NavLink>
                     <NavLink to="/online" className="hover:bg-gray-200 px-2 py-1 rounded-2xl">Online Experiences</NavLink>
                 </div>
-                <div className="text-[15px] gap-4 sticky top-0 flex border-2 border-black w-[1000px] justify-between px-4 py-1 items-center rounded-3xl mt-5">
-                    <div>
+                <div className="text-[15px] gap-4 sticky top-0 flex border-2 border-black w-[80%] xl:w-[1000px] justify-between px-4 py-1 items-center rounded-3xl mt-5">
+                    <div >
                         <h1 className="font-bold">Where</h1>
-                        <input onChange={(e)=>setSearch(e.target.value)}  className="outline-none" type="text" placeholder="Search destination" />
+                        <input onChange={(e)=>setSearch(e.target.value)}  className="outline-none w-[80%]" type="text" placeholder="Search destination" />
                     </div>
-                    <div>
+                    <div className="hidden xl:block">
                         <h1 className="font-bold">Check in</h1>
                         <input className="outline-none" type="date" placeholder="Add dates" />
                     </div>
-                    <div>
+                    <div className="hidden xl:block">
                         <h1 className="font-bold">Check out</h1>
                         <input className="outline-none" type="text" placeholder="Add dates" />
-                    </div>
-                    <div className={`${location.pathname === '/experiences' ? 'hidden' : 'block'}`}>
+                    </div >
+                    <div className={`${location.pathname === '/experiences' ? 'hidden' : 'block'} hidden xl:block`}>
                         <h1 className="font-bold">Who</h1>
                         <input className="outline-none" type="text" placeholder="Add guests" />
                     </div>
-                    <button className="flex items-center justify-center text-white text-2xl rounded-[50%] bg-red-500 w-[70px] h-[70px]"><FiSearch /></button>
+                    <button className=" flex items-center justify-center text-white text-2xl rounded-[50%] bg-red-500 w-[40px] h-[40px] lg:w-[70px] lg:h-[70px]"><FiSearch /></button>
                 </div>
             </div>
             <div className="flex items-center text-xl">
-                <button onClick={()=>navigate('/mehome')} className={`hover:bg-gray-200 px-3 py-2 rounded-2xl font-bold ${location.pathname === '/register' ? 'hidden' : 'block'} && ${location.pathname === '/login' ? 'hidden' : 'block'}` }>Airbnb your home</button>
-                <button onClick={toggleModal} className="hover:bg-gray-200 px-4 py-4 rounded-[50%]"><BsGlobe2 /></button>
-                <button onClick={Modal} className="w-[100px] h-[40px] flex items-center justify-evenly hover:bg-gray-200 px-2 py-1 rounded-2xl"><GiHamburgerMenu /><FaUserAlt /></button>
+                <button onClick={()=>navigate('/mehome')} className={ ` lg:flex hidden hover:bg-gray-200 px-3 py-2 rounded-2xl font-bold ${location.pathname === '/register' ? 'hidden' : 'block'} && ${location.pathname === '/login' ? 'hidden' : 'block'}` }>Airbnb your home</button>
+                <button onClick={toggleModal} className=" lg:flex hiddenhover:bg-gray-200 px-4 py-4 rounded-[50%]"><BsGlobe2 /></button>
+                <button onClick={Modal} className=" lg:flex hidden w-[100px] h-[40px] flex items-center justify-evenly hover:bg-gray-200 px-2 py-1 rounded-2xl"><GiHamburgerMenu /><FaUserAlt /></button>
             </div>
             {isModalOpen && (
                 <div className='fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-60'>

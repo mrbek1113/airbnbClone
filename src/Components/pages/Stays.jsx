@@ -106,9 +106,10 @@ const Housing = () => {
 
   return (
     <div className="relative w-full p-[40px] gap-5 flex items-center justify-center text-center flex-wrap mx-auto">
-      {data?.filter((product) => product.city.includes(search) )
+      
+      {data?.filter((product) => product.city.toLowerCase().includes(search) )
         .map((product) => (
-          <div className="relative w-[280px] p-[5px] h-[330px] rounded-2xl" key={product.id}>
+          <div className="relative  sm:w-[280px] sm:h-[330px] w-[100%] p-[5px] h-[100] rounded-2xl" key={product.id}>w280 h330
             <Swiper
               modules={[Navigation, Pagination, Scrollbar, Autoplay, A11y]}
               spaceBetween={10}
