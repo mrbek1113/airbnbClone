@@ -21,8 +21,9 @@ const Online = () => {
                     style={{ backgroundImage: `url(${img?.img})` }}>
                       <h1 className="text-2xl text-white font-bold">{data[0]?.name}</h1>
                     </div>
-            ))}
+            ))} 
         </div>
+        
 
         </div>
     );

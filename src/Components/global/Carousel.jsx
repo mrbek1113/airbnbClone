@@ -4,9 +4,13 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { A11y, Autoplay, Navigation, Pagination, Scrollbar } from "swiper/modules";
 import "swiper/css"
 import { useLocation } from "react-router-dom";
+import { useContext } from "react";
+import { UserContext } from "../../Context/UserContext";
+import autoprefixer from "autoprefixer";
 
 const Carousel = () => {
   const [data, setData] = useState([]);
+  const {setCategory}=useContext(UserContext)
   const location=useLocation()
 
   const url = 'https://1c09cdff245b1f0c.mokky.dev/carousel';
@@ -21,15 +25,17 @@ const Carousel = () => {
      <Swiper
       modules={[Navigation, Pagination, Scrollbar, Autoplay, A11y]}
       spaceBetween={15}
-      slidesPerView={3}
+      slidesPerView={7}
+
       // autoplay={{ delay: 3000 }}
       loop={true}
       navigation={true}
       // pagination={{ clickable: true }}
     >
       {data?.map((item) => (
-        <SwiperSlide  className=" flex gap-10 bg-gray-200 rounded-2xl" key={item.id}>
-          <h1 className=" lg:w-[150px] w-[200px] flex justify-center items-center text-black text-xl font-bold px-2 py-2 ">{item.name}</h1>
+        <SwiperSlide onClick={()=>setCategory(item.category)} className=" lg:w-[150px] w-[200px] flex sm:text-xl items-center gap-10 bg-gray-200 rounded-2xl p-2 justify-center" key={item.id}>
+          <img className="w-5 h-5 mx-auto" src={item.icon} alt="" />
+          <h1 className=" text-center w-full inline-block  text-[15px] text-black  font-bold  ">{item.name}</h1>
         </SwiperSlide>
       ))}
     </Swiper>

@@ -3,29 +3,82 @@ import { UserContext } from '../../Context/UserContext';
 import { Navigation, Pagination, Scrollbar, A11y, Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FiPaperclip } from "react-icons/fi";
+import { IoIosHeartEmpty } from "react-icons/io";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 
-import { useNavigate } from 'react-router-dom';
+import { useHref, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Experiences = () => {
   const navigate=useNavigate()
-  const { data, imgs } = useContext(UserContext);
+  const { data, imgs, search, category } = useContext(UserContext);
   const [isModalOpen, setIsModalOpen] = useState(false);  
+  const [likeData, setLikeData] = useState([]);
+  const [actionId, setActionId] = useState([]);
+  const modalRef = useHref(null);
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
 
+  useEffect(() => {
+    axios
+      .get("https://1c09cdff245b1f0c.mokky.dev/likePage")
+      .then((res) => setLikeData(res.data));
+  }, []);
+
+  useEffect(() => {
+    const likedIds = likeData.map((el) => el.id);
+    setActionId(likedIds);
+  }, [likeData]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        setIsModalOpen(false);
+      }
+    };
+
+    if (isModalOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isModalOpen]);
+
+  const likeClick = (id) => {
+    const product = data.find((product) => product.id === id);
+    if (!product) return;
+
+    if (actionId.includes(id)) {
+      axios
+        .delete(`https://1c09cdff245b1f0c.mokky.dev/likePage/${id}`)
+        .then(() => {
+          setActionId((prev) => prev.filter((itemId) => itemId !== id));
+        });
+    } else {
+      axios
+        .post("https://1c09cdff245b1f0c.mokky.dev/likePage", product)
+        .then(() => {
+          setActionId((prev) => [...prev, id]);
+        });
+    }
+  };
+
   const MyModalContent = () => {
   return (
-      <div className="bg-white p-[25px] relative z-10 flex items-start flex-col justify-between w-[800px] h-[550px] rounded-lg">
+      <div className="bg-white p-[25px] relative z-10 flex items-start flex-col justify-between sm:w-[600px] md:w-[700px] md:h-[500px]  lg:w-[800px] h-auto rounded-lg">
         <div className="w-full flex items-center gap-6">
           <img className="w-[100px] h-[100px] rounded-lg" src={imgs[0]?.img} alt="" />
           <h1 className="text-xl font-bold">Share this experience</h1>
         </div>
-        <div className="w-full flex items-center justify-between">
+        <div className="w-full flex flex-col md:flex-row mt-8 items-center justify-between">
           <div className="w-[48%] flex flex-col gap-3">
             <nav className="w-full py-2 border-2 border-black flex items-center gap-5 px-4 rounded-lg">
               <svg className="h-8 w-8 text-black" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
@@ -99,42 +152,86 @@ const Experiences = () => {
   };
 
   return (
-    <div className="relative w-[98%] p-[40px]  gap-5 flex items-center  justify-center text-center flex-wrap mx-auto">
-      {data?.map((product) => (
-        <div className=" relative w-[280px] p-[5px] h-[330px] rounded-2xl" key={product.id}>
-          <Swiper
-            modules={[Navigation, Pagination, Scrollbar, Autoplay, A11y]}
-            spaceBetween={10}
-            slidesPerView={1}
-            autoplay={{ delay: 3000 }}
-            // loop={true}
-            pagination={{ clickable: true }}
-          >
-            {imgs?.map((img) => (
-              <SwiperSlide className="w-10" key={img.id}>
-                <img className="w-full h-[320px] rounded-2xl object-cover" src={img?.img} alt="experience" />
-              </SwiperSlide>
-              ))}
-          </Swiper>
-          <h1>{product.name}</h1>
-          <h1>{product.price}</h1>
-          <button onClick={()=>navigate(`/navigate/${product.id}`)} className="absolute z-20 bg-white text-2xl w-[60px] top-[20px] left-[20px] flex items-center justify-center rounded-2xl">
-            Live
-          </button>
-          <button onClick={toggleModal} className="absolute z-20 bg-white text-2xl w-[40px] h-[40px] top-[20px] right-[20px] flex items-center justify-center rounded-2xl">
-            <FiPaperclip />
-          </button>
-        </div>
-      ))}
+    <div className="w-full">
+    <div className="w-[90%] mt-5 flex items-center gap-1 flex-wrap mx-auto">
+      {data
+        ?.filter(
+          (product) =>
+            product.city.toLowerCase().includes(search) &&
+            product.category.toLowerCase().includes(category.toLowerCase())
+        )
+        .map((product) => {
+          return (
+            <div
+              className="relative sm:w-[280px] sm:h-[400px] w-[100%] p-[5px] h-[100] rounded-2xl"
+              key={product.id}
+            >
+              <Swiper
+                modules={[Navigation, Pagination, Scrollbar, Autoplay, A11y]}
+                spaceBetween={10}
+                slidesPerView={1}
+                autoplay={{ delay: 3000 }}
+                pagination={{ clickable: true }}
+              >
+                {imgs?.map((img) => (
+                  <SwiperSlide className="w-10" key={img.id}>
+                    <img
+                      className="w-full h-[320px] rounded-2xl object-cover"
+                      src={img?.img}
+                      alt="experience"
+                    />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+              <h1>{product.name}</h1>
+              <h1>{product.price}</h1>
+              <h1>{product.city}</h1>
+              <button
+                onClick={() => navigate(`/navigate/${product.id}`)}
+                className="absolute z-20 bg-white text-2xl w-[60px] top-[20px] left-[20px] flex items-center justify-center rounded-2xl"
+              >
+                Live
+              </button>
+              <div>
+                <button
+                  onClick={() => likeClick(product.id)}
+                  className={`box-border absolute z-20 bg-white text-2xl w-[40px] h-[40px] top-[20px] right-[70px] flex items-center justify-center rounded-2xl`}
+                >
+                  <IoIosHeartEmpty
+                    className={`${
+                      actionId.includes(product.id)
+                        ? "bg-red-500 rounded-2xl text-white"
+                        : ""
+                    }`}
+                  />
+                </button>
+                <button
+                  onClick={toggleModal}
+                  className="absolute z-20 bg-white text-2xl w-[40px] h-[40px] top-[20px] right-[20px] flex items-center justify-center rounded-2xl"
+                >
+                  <FiPaperclip />
+                </button>
+              </div>
+            </div>
+          );
+        })}
 
       {isModalOpen && (
-        <div className='fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-60'>
-          <div onClick={(e) => e.stopPropagation()} className="pointer-events-auto">
+        <div
+          className="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-60"
+          onClick={toggleModal}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            ref={modalRef}
+            className="pointer-events-auto"
+          >
             <MyModalContent />
           </div>
         </div>
       )}
     </div>
+  </div>
   );
 };
 
